@@ -41,9 +41,9 @@ export class WeegyService {
       $dialogContainer.prepend('<b>User:</b>', $title.contents()); // normalize the title question
 
       const dialogsMatchedKeywords: WeegyDialog[] = [];
-      let currentDialog: WeegyDialog;
-      let currentDialogKey: keyof WeegyDialog;
-      let matchedKeywords: boolean;
+      const initDialog = () => ({ question: '', answer: '', keywords: 0 });
+      let currentDialog: WeegyDialog = initDialog();
+      let currentDialogKey: 'question' | 'answer' = 'question';
       const collect = () => {
         currentDialog.question = currentDialog.question.trim();
         currentDialog.answer = currentDialog.answer.trim();
@@ -55,25 +55,23 @@ export class WeegyService {
         if (isStarter) {
           if ($fragment.text() == 'User:') {
             currentDialogKey = 'question';
-            if (matchedKeywords) collect();
-            currentDialog = { question: '', answer: '' };
-            matchedKeywords = false;
+            if (currentDialog.keywords) collect();
+            currentDialog = initDialog();
           } else {
             currentDialogKey = 'answer';
           }
         } else {
           const isHighlighted = $fragment[0].tagName == 'span';
           if (currentDialogKey == 'question' && isHighlighted)
-            matchedKeywords = true;
+            currentDialog.keywords++;
           currentDialog[currentDialogKey] += $fragment.text();
         }
       }
-      if (matchedKeywords) collect();
+      if (currentDialog.keywords) collect();
 
       results.push(...dialogsMatchedKeywords);
     }
 
-    console.debug(results);
     return results;
   }
 }
@@ -81,4 +79,5 @@ export class WeegyService {
 export interface WeegyDialog {
   question: string;
   answer: string;
+  keywords: number;
 }
