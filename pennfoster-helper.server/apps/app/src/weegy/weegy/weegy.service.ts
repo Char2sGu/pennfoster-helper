@@ -7,7 +7,7 @@ import { map, Observable } from 'rxjs';
 export class WeegyService {
   constructor(private httpService: HttpService) {}
 
-  search(keywords: string): Observable<WeegySearchResult[]> {
+  search(keywords: string): Observable<WeegyDialog[]> {
     return this.httpService
       .get('https://www.weegy.com/Home.aspx', {
         params: {
@@ -19,31 +19,37 @@ export class WeegyService {
           ['SpPage']: 1,
         },
       })
-      .pipe(map((response) => this.resolveHtml(response.data)));
+      .pipe(map((response) => this.parseHtml(response.data)));
   }
 
-  private resolveHtml(html: string): WeegySearchResult[] {
+  private parseHtml(html: string): WeegyDialog[] {
     const $ = load(html);
-    const results: WeegySearchResult[] = [];
+    const results: WeegyDialog[] = [];
     for (const $container of $('.ArchiveDiv1')) {
-      const question = $('.InlineTitleLink', $container).text();
-      let answer = '';
-      for (const $fragment of $('.SearchBody', $container)
-        .contents()
-        // skip the `Weegy:` prefix and remove the `(More)` suffix
-        .slice(1, -1)) {
-        const text = $($fragment).text();
-        if (text == 'User:') break; // ignore the user's extra questions
-        answer += text;
-      }
-      answer = answer.trim();
-      results.push({ question, answer });
+      const title = $('.InlineTitleLink', $container).text();
+      let dialogsText = $('.SearchBody', $container).contents().not('a').text(); // `a` refers to the `(More)` element
+      dialogsText = `User: ${title} ` + dialogsText; // add back the title question.
+      const dialogFragments = dialogsText.split(/User:|Weegy:/).slice(1); // the item at index `0` is an empty string
+      const dialogs = dialogFragments.reduce<Partial<WeegyDialog>[]>(
+        (dialogs, fragment, index) => {
+          fragment = fragment.trim();
+          const isQuestion = !(index % 2);
+          if (isQuestion) {
+            dialogs[index] = { question: fragment };
+          } else {
+            dialogs[index - 1].answer = fragment;
+          }
+          return dialogs;
+        },
+        [],
+      );
+      results.push(...(dialogs as WeegyDialog[]));
     }
     return results;
   }
 }
 
-export interface WeegySearchResult {
+export interface WeegyDialog {
   question: string;
   answer: string;
 }
