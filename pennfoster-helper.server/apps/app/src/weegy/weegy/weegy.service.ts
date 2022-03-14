@@ -45,6 +45,7 @@ export class WeegyService {
       let currentDialog: WeegyDialog = initDialog();
       let currentDialogKey: 'question' | 'answer' = 'question';
       const collect = () => {
+        if (!currentDialog.keywords) return;
         currentDialog.question = currentDialog.question.trim();
         currentDialog.answer = currentDialog.answer.trim();
         dialogsMatchedKeywords.push(currentDialog);
@@ -55,7 +56,7 @@ export class WeegyService {
         if (isStarter) {
           if ($fragment.text() == 'User:') {
             currentDialogKey = 'question';
-            if (currentDialog.keywords) collect();
+            collect();
             currentDialog = initDialog();
           } else {
             currentDialogKey = 'answer';
@@ -67,7 +68,7 @@ export class WeegyService {
           currentDialog[currentDialogKey] += $fragment.text();
         }
       }
-      if (currentDialog.keywords) collect();
+      collect();
 
       results.push(...dialogsMatchedKeywords);
     }
