@@ -7,7 +7,7 @@ import { map, Observable } from 'rxjs';
 export class WeegyService {
   constructor(private httpService: HttpService) {}
 
-  search(question: string): Observable<WeegySearchResult[]> {
+  search(keywords: string): Observable<WeegySearchResult[]> {
     return this.httpService
       .get('https://www.weegy.com/Home.aspx', {
         params: {
@@ -15,7 +15,7 @@ export class WeegyService {
           ['SpAccountId']: 'DANIELLE',
           ['SpCategory']: '',
           ['SpSubcategory']: '',
-          ['SpKeywords']: question,
+          ['SpKeywords']: keywords,
           ['SpPage']: 1,
         },
       })
