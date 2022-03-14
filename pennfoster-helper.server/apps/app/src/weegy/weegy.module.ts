@@ -1,8 +1,8 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 
-import { WeegyService } from './weegy.service';
 import { WeegyController } from './weegy.controller';
+import { WeegyService } from './weegy.service';
 
 @Module({
   imports: [HttpModule],

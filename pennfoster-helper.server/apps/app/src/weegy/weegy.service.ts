@@ -50,7 +50,7 @@ export class WeegyService {
         currentDialog.answer = currentDialog.answer.trim();
         dialogsMatchedKeywords.push(currentDialog);
       };
-      for (const el of $dialogContainer.contents()) {
+      for (const el of $dialogContainer.contents().not('a')) {
         const $fragment = $(el as Element);
         const isStarter = $fragment[0].tagName == 'b';
         if (isStarter) {
