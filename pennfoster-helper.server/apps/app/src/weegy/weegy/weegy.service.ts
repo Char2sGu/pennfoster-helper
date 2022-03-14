@@ -1,14 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { Element, load } from 'cheerio';
-import { readFileSync } from 'fs';
 import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class WeegyService {
-  constructor(private httpService: HttpService) {
-    this.parseHtml(readFileSync('weegy.html', { encoding: 'utf8' }));
-  }
+  constructor(private httpService: HttpService) {}
 
   search(keywords: string): Observable<WeegyDialog[]> {
     return this.httpService
@@ -22,7 +19,10 @@ export class WeegyService {
           ['SpPage']: 1,
         },
       })
-      .pipe(map((response) => this.parseHtml(response.data)));
+      .pipe(
+        map((response) => this.parseHtml(response.data)),
+        map((results) => this.refineDialogs(results, 5)),
+      );
   }
 
   /**
@@ -73,6 +73,35 @@ export class WeegyService {
       results.push(...dialogsMatchedKeywords);
     }
 
+    return results;
+  }
+
+  /**
+   * Filter the dialogs and reserve only the best matched ones.
+   * @param dialogs
+   * @param size
+   * @returns
+   */
+  private refineDialogs(dialogs: WeegyDialog[], size: number): WeegyDialog[] {
+    const map = new Map<number, WeegyDialog[]>();
+    dialogs.forEach((dialog) => {
+      const listRaw = map.get(dialog.keywords);
+      const list = listRaw ?? [];
+      list.push(dialog);
+      if (!listRaw) map.set(dialog.keywords, list);
+    });
+    const levels = [...map.keys()].sort().reverse(); // large -> small
+
+    const results: WeegyDialog[] = [];
+    for (const level of levels) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const dialogs = map.get(level)!;
+      results.push(...dialogs);
+      if (results.length >= size) {
+        results.length = size;
+        break;
+      }
+    }
     return results;
   }
 }
