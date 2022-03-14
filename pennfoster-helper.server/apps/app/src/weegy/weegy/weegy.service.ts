@@ -1,11 +1,14 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { load } from 'cheerio';
+import { Element, load } from 'cheerio';
+import { readFileSync } from 'fs';
 import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class WeegyService {
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService) {
+    this.parseHtml(readFileSync('weegy.html', { encoding: 'utf8' }));
+  }
 
   search(keywords: string): Observable<WeegyDialog[]> {
     return this.httpService
@@ -22,29 +25,55 @@ export class WeegyService {
       .pipe(map((response) => this.parseHtml(response.data)));
   }
 
+  /**
+   * Parse the HTML of Weegy's search result page and extract dialogs that
+   * matched the search keywords.
+   * @param html
+   * @returns
+   */
   private parseHtml(html: string): WeegyDialog[] {
     const $ = load(html);
     const results: WeegyDialog[] = [];
+
     for (const $container of $('.ArchiveDiv1')) {
-      const title = $('.InlineTitleLink', $container).text();
-      let dialogsText = $('.SearchBody', $container).contents().not('a').text(); // `a` refers to the `(More)` element
-      dialogsText = `User: ${title} ` + dialogsText; // add back the title question.
-      const dialogFragments = dialogsText.split(/User:|Weegy:/).slice(1); // the item at index `0` is an empty string
-      const dialogs = dialogFragments.reduce<Partial<WeegyDialog>[]>(
-        (dialogs, fragment, index) => {
-          fragment = fragment.trim();
-          const isQuestion = !(index % 2);
-          if (isQuestion) {
-            dialogs[index] = { question: fragment };
+      const $title = $('.InlineTitleLink', $container);
+      const $dialogContainer = $('.SearchBody', $container);
+      $dialogContainer.prepend('<b>User:</b>', $title.contents()); // normalize the title question
+
+      const dialogsMatchedKeywords: WeegyDialog[] = [];
+      let currentDialog: WeegyDialog;
+      let currentDialogKey: keyof WeegyDialog;
+      let matchedKeywords: boolean;
+      const collect = () => {
+        currentDialog.question = currentDialog.question.trim();
+        currentDialog.answer = currentDialog.answer.trim();
+        dialogsMatchedKeywords.push(currentDialog);
+      };
+      for (const el of $dialogContainer.contents()) {
+        const $fragment = $(el as Element);
+        const isStarter = $fragment[0].tagName == 'b';
+        if (isStarter) {
+          if ($fragment.text() == 'User:') {
+            currentDialogKey = 'question';
+            if (matchedKeywords) collect();
+            currentDialog = { question: '', answer: '' };
+            matchedKeywords = false;
           } else {
-            dialogs[index - 1].answer = fragment;
+            currentDialogKey = 'answer';
           }
-          return dialogs;
-        },
-        [],
-      );
-      results.push(...(dialogs as WeegyDialog[]));
+        } else {
+          const isHighlighted = $fragment[0].tagName == 'span';
+          if (currentDialogKey == 'question' && isHighlighted)
+            matchedKeywords = true;
+          currentDialog[currentDialogKey] += $fragment.text();
+        }
+      }
+      if (matchedKeywords) collect();
+
+      results.push(...dialogsMatchedKeywords);
     }
+
+    console.debug(results);
     return results;
   }
 }
