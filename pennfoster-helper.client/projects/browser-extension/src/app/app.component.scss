@@ -28,9 +28,12 @@ mat-sidenav-content {
     height: 0;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+    overflow: auto;
   }
   > .actions {
     display: flex;
-    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    height: 50px;
   }
 }
