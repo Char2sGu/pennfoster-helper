@@ -6,7 +6,7 @@ import { map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class WeegyService {
+export class Weegy {
   constructor(private httpClient: HttpClient) {}
 
   search(keywords: string): Observable<WeegyDialog[]> {
