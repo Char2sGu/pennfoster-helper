@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "manifest_version": 3,
   "action": { "default_popup": "index.html" },
-  "permissions": ["scripting"],
+  "permissions": ["scripting", "storage"],
   "host_permissions": [
     "https://assignments.pennfoster.com/Exams/Random",
     "https://www.weegy.com/Home.aspx"

@@ -8,8 +8,10 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import { concatMap, of } from 'rxjs';
 
 import { Bridge } from './core/bridge.service';
+import { Cache } from './core/cache.service';
 import { Weegy, WeegyDialog } from './core/weegy.service';
 
 @Component({
@@ -46,6 +48,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private overlay: Overlay,
     private bridge: Bridge,
     private weegy: Weegy,
+    private cache: Cache,
   ) {}
 
   ngOnInit(): void {}
@@ -65,18 +68,25 @@ export class AppComponent implements OnInit, AfterViewInit {
     );
 
     this.loading = true;
-    this.bridge
-      .execute(
-        () =>
-          document.querySelector<HTMLSpanElement>('span.bordered-content')
-            ?.innerText,
-      )
-      .subscribe((question) => {
-        if (!question) return; // TODO
-        this.weegy.search(question).subscribe((dialogs) => {
-          this.dialogs = dialogs;
-          this.loading = false;
-        });
+    const question$ = this.bridge.execute(
+      () =>
+        document.querySelector<HTMLSpanElement>('span.bordered-content')
+          ?.innerText,
+    );
+    question$.subscribe((question) => {
+      if (!question) return; // TODO
+      const $dialogs = this.cache
+        .read(question)
+        .pipe(
+          concatMap((results) =>
+            results.length ? of(results) : this.weegy.search(question),
+          ),
+        );
+      $dialogs.subscribe((dialogs) => {
+        this.cache.write(question, dialogs).subscribe();
+        this.dialogs = dialogs;
+        this.loading = false;
       });
+    });
   }
 }
