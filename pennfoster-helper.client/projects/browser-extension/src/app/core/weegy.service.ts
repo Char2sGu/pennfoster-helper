@@ -24,7 +24,7 @@ export class Weegy {
       })
       .pipe(
         map((html) => this.parseHtml(html)),
-        map((results) => this.refineDialogs(results, 5)),
+        map((results) => results.sort((a, b) => b.keywords - a.keywords)),
       );
   }
 
@@ -76,35 +76,6 @@ export class Weegy {
       results.push(...dialogsMatchedKeywords);
     }
 
-    return results;
-  }
-
-  /**
-   * Filter the dialogs and reserve only the best matched ones.
-   * @param dialogs
-   * @param size
-   * @returns
-   */
-  private refineDialogs(dialogs: WeegyDialog[], size: number): WeegyDialog[] {
-    const map = new Map<number, WeegyDialog[]>();
-    dialogs.forEach((dialog) => {
-      const listRaw = map.get(dialog.keywords);
-      const list = listRaw ?? [];
-      list.push(dialog);
-      if (!listRaw) map.set(dialog.keywords, list);
-    });
-    const levels = [...map.keys()].sort().reverse(); // large -> small
-
-    const results: WeegyDialog[] = [];
-    for (const level of levels) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const dialogs = map.get(level)!;
-      results.push(...dialogs);
-      if (results.length >= size) {
-        results.length = size;
-        break;
-      }
-    }
     return results;
   }
 }
