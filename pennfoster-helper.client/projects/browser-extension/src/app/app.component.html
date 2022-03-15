@@ -1,36 +1,36 @@
-<mat-tab-group
-  color="accent"
-  backgroundColor="primary"
-  mat-align-tabs="center"
-  [(selectedIndex)]="selectedIndex"
->
-  <mat-tab
-    *ngFor="let dialog of dialogs; let index = index"
-    [label]="'Result' + (index + 1)"
-  >
-    <div class="content">
-      <div class="dialog">
-        <h2>{{ dialog.question }}</h2>
-        <div>{{ dialog.answer }}</div>
+<div class="container">
+  <mat-toolbar class="mat-elevation-z6" color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="logo">PennFoster Helper</div>
+  </mat-toolbar>
+  <mat-sidenav-container>
+    <mat-sidenav mode="over" #sidenav></mat-sidenav>
+    <mat-sidenav-content>
+      <div class="content">
+        <section class="mat-h2">{{ dialogCurrent.question }}</section>
+        <section class="mat-h3">{{ dialogCurrent.answer }}</section>
       </div>
-      <mat-divider vertical></mat-divider>
       <div class="actions">
-        <button
-          mat-button
-          color="primary"
-          [disabled]="selectedIndex == dialogs.length - 1"
-          (click)="selectedIndex = selectedIndex + 1"
-        >
-          Next
-        </button>
-        <button
-          mat-button
-          [disabled]="selectedIndex == 0"
-          (click)="selectedIndex = selectedIndex - 1"
-        >
-          Prev
-        </button>
+        <div>
+          <button
+            mat-icon-button
+            [disabled]="dialogCurrentIndex == 0"
+            (click)="dialogCurrentIndex = dialogCurrentIndex - 1"
+          >
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+          <span>{{ dialogCurrentIndex + 1 }} / {{ dialogs.length }}</span>
+          <button
+            mat-icon-button
+            [disabled]="dialogCurrentIndex == dialogs.length - 1"
+            (click)="dialogCurrentIndex = dialogCurrentIndex + 1"
+          >
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </div>
       </div>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

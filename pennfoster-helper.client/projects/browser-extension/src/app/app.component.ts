@@ -11,6 +11,11 @@ import { Weegy, WeegyDialog } from './core/weegy.service';
 export class AppComponent implements OnInit {
   selectedIndex = 0;
   dialogs: WeegyDialog[] = [];
+  dialogCurrentIndex = 0;
+
+  get dialogCurrent(): WeegyDialog {
+    return this.dialogs[this.dialogCurrentIndex];
+  }
 
   constructor(private bridge: Bridge, private weegy: Weegy) {}
 

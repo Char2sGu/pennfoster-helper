@@ -1,27 +1,32 @@
-mat-tab-group {
+.container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  ::ng-deep {
-    .mat-tab-body-wrapper {
-      height: 100%;
-    }
+  > mat-sidenav-container {
+    flex-grow: 1;
   }
 }
 
-.content {
+mat-toolbar {
+  z-index: 2;
+  .logo {
+    margin: 0 8px;
+  }
+}
+
+mat-sidenav-content {
   display: flex;
+  flex-direction: column;
+  height: calc(100% - 16px * 2);
   padding: 16px;
-  height: calc(100% - 24px * 2);
-  .dialog {
+  > .content {
     flex-grow: 1;
+    height: 0;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
   }
-  mat-divider {
-    margin: 8px;
-  }
-  .actions {
+  > .actions {
     display: flex;
-    flex-direction: column-reverse;
-    > button {
-      margin-top: 4px;
-    }
+    flex-direction: row-reverse;
   }
 }
