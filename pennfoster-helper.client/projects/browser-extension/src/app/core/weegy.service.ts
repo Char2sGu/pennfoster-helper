@@ -51,6 +51,7 @@ export class Weegy {
         if (!currentDialog.keywords) return;
         currentDialog.question = currentDialog.question.trim();
         currentDialog.answer = currentDialog.answer.trim();
+        if (!currentDialog.answer) return;
         dialogsMatchedKeywords.push(currentDialog);
       };
       for (const el of $dialogContainer.contents().not('a')) {
