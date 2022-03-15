@@ -1,5 +1,27 @@
-:host {
-  display: block;
-  width: 600px;
-  height: 400px;
+mat-tab-group {
+  height: 100%;
+  ::ng-deep {
+    .mat-tab-body-wrapper {
+      height: 100%;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  padding: 16px;
+  height: calc(100% - 24px * 2);
+  .dialog {
+    flex-grow: 1;
+  }
+  mat-divider {
+    margin: 8px;
+  }
+  .actions {
+    display: flex;
+    flex-direction: column-reverse;
+    > button {
+      margin-top: 4px;
+    }
+  }
 }

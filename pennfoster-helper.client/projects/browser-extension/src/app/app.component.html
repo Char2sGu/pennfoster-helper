@@ -1,0 +1,36 @@
+<mat-tab-group
+  color="accent"
+  backgroundColor="primary"
+  mat-align-tabs="center"
+  [(selectedIndex)]="selectedIndex"
+>
+  <mat-tab
+    *ngFor="let dialog of dialogs; let index = index"
+    [label]="'Result' + (index + 1)"
+  >
+    <div class="content">
+      <div class="dialog">
+        <h2>{{ dialog.question }}</h2>
+        <div>{{ dialog.answer }}</div>
+      </div>
+      <mat-divider vertical></mat-divider>
+      <div class="actions">
+        <button
+          mat-button
+          color="primary"
+          [disabled]="selectedIndex == dialogs.length - 1"
+          (click)="selectedIndex = selectedIndex + 1"
+        >
+          Next
+        </button>
+        <button
+          mat-button
+          [disabled]="selectedIndex == 0"
+          (click)="selectedIndex = selectedIndex - 1"
+        >
+          Prev
+        </button>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

@@ -9,6 +9,7 @@ import { Weegy, WeegyDialog } from './core/weegy.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  selectedIndex = 0;
   dialogs: WeegyDialog[] = [];
 
   constructor(private bridge: Bridge, private weegy: Weegy) {}
