@@ -7,7 +7,7 @@
   </mat-toolbar>
   <mat-sidenav-container>
     <mat-sidenav mode="over" #sidenav></mat-sidenav>
-    <mat-sidenav-content>
+    <mat-sidenav-content *ngIf="!loading">
       <div class="content">
         <section class="mat-h2">{{ dialogCurrent.question }}</section>
         <section class="mat-h3">{{ dialogCurrent.answer }}</section>
@@ -34,3 +34,7 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
+
+<ng-template #spinner>
+  <mat-spinner [diameter]="50"></mat-spinner>
+</ng-template>
