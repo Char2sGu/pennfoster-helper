@@ -7,7 +7,7 @@
   </mat-toolbar>
   <mat-sidenav-container>
     <mat-sidenav mode="over" #sidenav></mat-sidenav>
-    <mat-sidenav-content *ngIf="!loading">
+    <mat-sidenav-content *ngIf="dialogCurrent">
       <div class="content">
         <section class="mat-h2">{{ dialogCurrent.question }}</section>
         <section class="mat-h3">{{ dialogCurrent.answer }}</section>
