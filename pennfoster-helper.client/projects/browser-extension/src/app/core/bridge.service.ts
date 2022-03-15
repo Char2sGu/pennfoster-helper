@@ -1,26 +1,31 @@
 import { Injectable } from '@angular/core';
+import { concatMap, from, map, Observable, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Bridge {
-  private tab!: Tab;
+  private tab$ = from(chrome.tabs.query({ active: true })).pipe(
+    map((tabs) => tabs[0] as Tab),
+    shareReplay(1),
+  );
 
   constructor() {}
 
-  async execute<ReturnValue extends Scalar>(
+  execute<ReturnValue extends Scalar>(
     func: () => ReturnValue,
-  ): Promise<ReturnValue> {
-    await this.init();
-    return await chrome.scripting
-      .executeScript({ target: { tabId: this.tab.id }, func })
-      .then(([result]) => result.result);
-  }
-
-  private async init(): Promise<void> {
-    if (this.tab) return;
-    const tab = await chrome.tabs.query({ active: true }).then(([tab]) => tab);
-    this.tab = tab as Tab;
+  ): Observable<ReturnValue> {
+    return this.tab$.pipe(
+      concatMap((tab) =>
+        from(
+          chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            func,
+          }),
+        ),
+      ),
+      map((results) => results[0].result),
+    );
   }
 }
 
