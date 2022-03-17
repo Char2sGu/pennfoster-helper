@@ -20,6 +20,11 @@ mat-sidenav {
 }
 
 mat-sidenav-content {
+  mtx-loader {
+    ::ng-deep .mtx-loader-backdrop {
+      z-index: 2;
+    }
+  }
   mat-tab-group {
     height: 100%;
     ::ng-deep .mat-tab-body-wrapper {
