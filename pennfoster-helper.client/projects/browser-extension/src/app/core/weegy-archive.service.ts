@@ -6,10 +6,10 @@ import { map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class Weegy {
+export class WeegyArchive {
   constructor(private httpClient: HttpClient) {}
 
-  search(keywords: string): Observable<WeegyDialog[]> {
+  search(keywords: string): Observable<WeegyArchiveDialog[]> {
     return this.httpClient
       .get('https://www.weegy.com/Home.aspx', {
         params: {
@@ -34,18 +34,18 @@ export class Weegy {
    * @param html
    * @returns
    */
-  private parseHtml(html: string): WeegyDialog[] {
+  private parseHtml(html: string): WeegyArchiveDialog[] {
     const $ = load(html);
-    const results: WeegyDialog[] = [];
+    const results: WeegyArchiveDialog[] = [];
 
     for (const $container of $('.ArchiveDiv1')) {
       const $title = $('.InlineTitleLink', $container);
       const $dialogContainer = $('.SearchBody', $container);
       $dialogContainer.prepend('<b>User:</b>', $title.contents()); // normalize the title question
 
-      const dialogsMatchedKeywords: WeegyDialog[] = [];
+      const dialogsMatchedKeywords: WeegyArchiveDialog[] = [];
       const initDialog = () => ({ question: '', answer: '', keywords: 0 });
-      let currentDialog: WeegyDialog = initDialog();
+      let currentDialog: WeegyArchiveDialog = initDialog();
       let currentDialogKey: 'question' | 'answer' = 'question';
       const collect = () => {
         if (!currentDialog.keywords) return;
@@ -81,7 +81,7 @@ export class Weegy {
   }
 }
 
-export interface WeegyDialog {
+export interface WeegyArchiveDialog {
   question: string;
   answer: string;
   keywords: number;

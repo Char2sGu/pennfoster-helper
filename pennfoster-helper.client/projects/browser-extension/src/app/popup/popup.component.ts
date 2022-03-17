@@ -12,7 +12,10 @@ import { concatMap, of } from 'rxjs';
 
 import { Bridge } from '../core/bridge.service';
 import { Cache } from '../core/cache.service';
-import { Weegy, WeegyDialog } from '../core/weegy.service';
+import {
+  WeegyArchive,
+  WeegyArchiveDialog,
+} from '../core/weegy-archive.service';
 
 @Component({
   selector: 'app-popup',
@@ -21,7 +24,7 @@ import { Weegy, WeegyDialog } from '../core/weegy.service';
 })
 export class PopupComponent implements OnInit, AfterViewInit {
   selectedIndex = 0;
-  dialogs: WeegyDialog[] = [];
+  dialogs: WeegyArchiveDialog[] = [];
   dialogCurrentIndex = 0;
 
   @ViewChild('spinner')
@@ -39,7 +42,7 @@ export class PopupComponent implements OnInit, AfterViewInit {
     else this.spinnerOverlayRef.detach();
   }
 
-  get dialogCurrent(): WeegyDialog {
+  get dialogCurrent(): WeegyArchiveDialog {
     return this.dialogs[this.dialogCurrentIndex];
   }
 
@@ -47,7 +50,7 @@ export class PopupComponent implements OnInit, AfterViewInit {
     private viewContainerRef: ViewContainerRef,
     private overlay: Overlay,
     private bridge: Bridge,
-    private weegy: Weegy,
+    private weegyArchive: WeegyArchive,
     private cache: Cache,
   ) {}
 
@@ -79,7 +82,7 @@ export class PopupComponent implements OnInit, AfterViewInit {
         .read(question)
         .pipe(
           concatMap((results) =>
-            results.length ? of(results) : this.weegy.search(question),
+            results.length ? of(results) : this.weegyArchive.search(question),
           ),
         );
       $dialogs.subscribe((dialogs) => {
