@@ -1,6 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use '@ng-matero/extensions' as mtx;
 
-@import '../../../node_modules/@angular/material/prebuilt-themes/indigo-pink';
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: mat.define-palette(mat.$indigo-palette, 500),
+      accent: mat.define-palette(mat.$pink-palette, A200, A100, A400),
+    ),
+  )
+);
+
+@include mat.core();
+@include mat.core-theme($theme);
+@include mat.all-component-themes($theme);
+@include mtx.all-component-themes($theme);
 
 body {
   margin: 0;
