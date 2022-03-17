@@ -6,7 +6,7 @@ import { concat, map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class WeegyService {
+export class WeegyOnlineService {
   constructor(private httpClient: HttpClient) {}
 
   ask(question: string): Observable<string> {

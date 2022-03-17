@@ -3,7 +3,7 @@ import { Observable, of, switchMap, tap } from 'rxjs';
 
 import { Cache } from '../../core/cache.service';
 import { PageData } from '../../core/page-data.service';
-import { WeegyService } from '../../core/weegy.service';
+import { WeegyOnlineService } from '../../core/weegy-online.service';
 
 @Component({
   selector: 'app-popup-online',
@@ -17,7 +17,7 @@ export class PopupOnlineComponent implements OnInit {
   constructor(
     private content: PageData,
     private cache: Cache,
-    private weegyService: WeegyService,
+    private weegyOnlineService: WeegyOnlineService,
   ) {}
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class PopupOnlineComponent implements OnInit {
             switchMap((data) =>
               data.answer
                 ? of(data.answer)
-                : this.weegyService
+                : this.weegyOnlineService
                     .ask(question)
                     .pipe(
                       tap((answer) => this.cache.write({ ...data, answer })),
