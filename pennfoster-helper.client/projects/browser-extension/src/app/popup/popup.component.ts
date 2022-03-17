@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { concatMap, filter, forkJoin, of, tap } from 'rxjs';
+import { concatMap, forkJoin, of, tap } from 'rxjs';
 
 import { Cache } from '../core/cache.service';
 import { PageContent } from '../core/page-content.service';
 import { WeegyService } from '../core/weegy.service';
 import {
-  WeegyArchiveService,
   WeegyArchiveDialog,
+  WeegyArchiveService,
 } from '../core/weegy-archive.service';
 
 @Component({
@@ -36,7 +36,6 @@ export class PopupComponent implements OnInit {
     this.loading = true;
     this.content.question$
       .pipe(
-        filter((question): question is string => !!question),
         tap((question) => (this.question = question)),
         concatMap(() => this.cache.read(this.question)),
         concatMap((cacheData) =>

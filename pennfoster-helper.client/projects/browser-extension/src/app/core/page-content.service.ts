@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { filter, Observable, shareReplay } from 'rxjs';
 
 import { Bridge } from './bridge.service';
 
@@ -7,7 +7,7 @@ import { Bridge } from './bridge.service';
   providedIn: 'root',
 })
 export class PageContent {
-  question$: Observable<string | undefined>;
+  question$: Observable<string>;
 
   constructor(private bridge: Bridge) {
     this.question$ = this.bridge
@@ -16,6 +16,9 @@ export class PageContent {
           document.querySelector<HTMLSpanElement>('span.bordered-content')
             ?.innerText,
       )
-      .pipe(shareReplay(1));
+      .pipe(
+        filter((v): v is string => !!v),
+        shareReplay(1),
+      );
   }
 }
