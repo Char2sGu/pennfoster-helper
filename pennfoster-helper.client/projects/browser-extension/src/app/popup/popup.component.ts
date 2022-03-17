@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { concatMap, filter, forkJoin, of, tap } from 'rxjs';
 
-import { Bridge } from '../core/bridge.service';
 import { Cache } from '../core/cache.service';
+import { PageContent } from '../core/page-content.service';
 import { Weegy } from '../core/weegy.service';
 import {
   WeegyArchive,
@@ -26,7 +26,7 @@ export class PopupComponent implements OnInit {
   }
 
   constructor(
-    private bridge: Bridge,
+    private content: PageContent,
     private weegy: Weegy,
     private weegyArchive: WeegyArchive,
     private cache: Cache,
@@ -34,12 +34,7 @@ export class PopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.bridge
-      .execute(
-        () =>
-          document.querySelector<HTMLSpanElement>('span.bordered-content')
-            ?.innerText,
-      )
+    this.content.question$
       .pipe(
         filter((question): question is string => !!question),
         tap((question) => (this.question = question)),
