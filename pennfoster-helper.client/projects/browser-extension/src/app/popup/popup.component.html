@@ -8,20 +8,25 @@
   <mat-sidenav-container>
     <mat-sidenav mode="over" #sidenav></mat-sidenav>
     <mat-sidenav-content>
-      <mtx-loader [loading]="loading" [hasBackdrop]="true">
-        <main *ngIf="dialogCurrent">
-          <div class="content">
-            <section class="mat-h2">{{ dialogCurrent.question }}</section>
-            <section class="mat-h3">{{ dialogCurrent.answer }}</section>
-          </div>
-          <div class="actions">
-            <app-paginator
-              [pageMax]="dialogs.length"
-              [pageCurrent]="dialogCurrentIndex + 1"
-              (pageCurrentChange)="dialogCurrentIndex = $event - 1"
-            ></app-paginator>
-          </div>
-        </main>
+      <mtx-loader [loading]="loading">
+        <mat-tab-group>
+          <mat-tab label=""></mat-tab>
+          <mat-tab label="Archives">
+            <main class="archives" *ngIf="dialogCurrent">
+              <div class="content">
+                <section class="mat-h2">{{ dialogCurrent.question }}</section>
+                <section class="mat-h3">{{ dialogCurrent.answer }}</section>
+              </div>
+              <div class="actions">
+                <app-paginator
+                  [pageMax]="dialogs.length"
+                  [pageCurrent]="dialogCurrentIndex + 1"
+                  (pageCurrentChange)="dialogCurrentIndex = $event - 1"
+                ></app-paginator>
+              </div>
+            </main>
+          </mat-tab>
+        </mat-tab-group>
       </mtx-loader>
     </mat-sidenav-content>
   </mat-sidenav-container>
