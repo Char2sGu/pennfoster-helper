@@ -9,10 +9,12 @@ import { MtxLoaderModule } from '@ng-matero/extensions/loader';
 
 import { PaginatorModule } from '../components/paginator/paginator.module';
 import { PopupComponent } from './popup.component';
+import { PopupArchivesComponent } from './popup-archives/popup-archives.component';
+import { PopupOnlineComponent } from './popup-online/popup-online.component';
 import { PopupRoutingModule } from './popup-routing.module';
 
 @NgModule({
-  declarations: [PopupComponent],
+  declarations: [PopupComponent, PopupArchivesComponent, PopupOnlineComponent],
   imports: [
     CommonModule,
     PopupRoutingModule,

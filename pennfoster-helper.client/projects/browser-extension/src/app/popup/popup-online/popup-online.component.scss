@@ -1,0 +1,7 @@
+.container {
+  height: calc(100% - 16px * 2);
+  padding: 16px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  overflow: auto;
+}

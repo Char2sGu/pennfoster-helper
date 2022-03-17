@@ -8,39 +8,20 @@
   <mat-sidenav-container>
     <mat-sidenav mode="over" #sidenav></mat-sidenav>
     <mat-sidenav-content>
-      <mtx-loader [loading]="loading">
-        <mat-tab-group>
-          <mat-tab label="Online">
-            <main class="online">
-              <section class="mat-h2">
-                {{ question }}
-              </section>
-              <section class="mat-h3">
-                {{ onlineAnswer }}
-              </section>
-            </main>
-          </mat-tab>
-          <mat-tab label="Archives">
-            <main class="archives" *ngIf="archiveDialogCurrent">
-              <div class="content">
-                <section class="mat-h2">
-                  {{ archiveDialogCurrent.question }}
-                </section>
-                <section class="mat-h3">
-                  {{ archiveDialogCurrent.answer }}
-                </section>
-              </div>
-              <div class="actions">
-                <app-paginator
-                  [pageMax]="archiveDialogs.length"
-                  [pageCurrent]="archiveDialogCurrentIndex + 1"
-                  (pageCurrentChange)="archiveDialogCurrentIndex = $event - 1"
-                ></app-paginator>
-              </div>
-            </main>
-          </mat-tab>
-        </mat-tab-group>
-      </mtx-loader>
+      <nav mat-tab-nav-bar>
+        <a
+          mat-tab-link
+          *ngFor="let tab of tabs"
+          [routerLink]="tab.commands"
+          [active]="tabActive == tab"
+          (click)="tabActive = tab"
+        >
+          {{ tab.name }}
+        </a>
+      </nav>
+      <mat-tab-nav-panel>
+        <router-outlet></router-outlet>
+      </mat-tab-nav-panel>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

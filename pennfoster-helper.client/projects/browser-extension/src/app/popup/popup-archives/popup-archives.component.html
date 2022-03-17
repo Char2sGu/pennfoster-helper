@@ -1,0 +1,18 @@
+<mtx-loader [loading]="loading">
+  <div class="container" *ngIf="!loading">
+    <div class="content">
+      <section class="mat-h2">
+        {{ archiveCurrent?.question }}
+      </section>
+      <section class="mat-h3">
+        {{ archiveCurrent?.answer }}
+      </section>
+    </div>
+    <div class="actions">
+      <app-paginator
+        [pageMax]="archives.length"
+        [(pageCurrent)]="page"
+      ></app-paginator>
+    </div>
+  </div>
+</mtx-loader>
