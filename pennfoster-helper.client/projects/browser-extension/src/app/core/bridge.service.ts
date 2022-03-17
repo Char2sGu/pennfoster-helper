@@ -5,7 +5,9 @@ import { concatMap, from, map, Observable, shareReplay } from 'rxjs';
   providedIn: 'root',
 })
 export class Bridge {
-  private tab$ = from(chrome.tabs.query({ active: true })).pipe(
+  private tab$ = from(
+    chrome.tabs.query({ active: true, currentWindow: true }),
+  ).pipe(
     map((tabs) => tabs[0] as Tab),
     shareReplay(1),
   );
