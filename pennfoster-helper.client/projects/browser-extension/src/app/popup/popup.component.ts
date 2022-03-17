@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PopupComponent implements OnInit {
   tabs: TabInfo[] = [
-    { name: 'Online', commands: ['online'] },
     { name: 'Archives', commands: ['archives'] },
+    { name: 'Online', commands: ['online'] },
   ];
   tabActive = this.tabs[0];
 

@@ -10,9 +10,9 @@ const routes: Routes = [
     path: '',
     component: PopupComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'online' },
-      { path: 'online', component: PopupOnlineComponent },
+      { path: '', pathMatch: 'full', redirectTo: 'archives' },
       { path: 'archives', component: PopupArchivesComponent },
+      { path: 'online', component: PopupOnlineComponent },
     ],
   },
 ];
