@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { map, Observable, startWith } from 'rxjs';
+import { catchError, map, Observable, of, startWith } from 'rxjs';
 
 @Pipe({
   name: 'withLoading',
@@ -9,6 +9,7 @@ export class WithLoadingPipe implements PipeTransform {
     return source.pipe(
       map((value) => ({ loading: false, value })),
       startWith({ loading: true } as const),
+      catchError(() => of({ loading: false })),
     );
   }
 }
