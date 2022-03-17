@@ -7,6 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MtxLoaderModule } from '@ng-matero/extensions/loader';
 
+import { LoadingModule } from '../components/loading/loading.module';
 import { PaginatorModule } from '../components/paginator/paginator.module';
 import { PopupComponent } from './popup.component';
 import { PopupArchivesComponent } from './popup-archives/popup-archives.component';
@@ -25,6 +26,7 @@ import { PopupRoutingModule } from './popup-routing.module';
     MatTabsModule,
     MtxLoaderModule,
     PaginatorModule,
+    LoadingModule,
   ],
 })
 export class PopupModule {}

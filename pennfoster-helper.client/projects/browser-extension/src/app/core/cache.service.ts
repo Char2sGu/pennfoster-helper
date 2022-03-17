@@ -24,11 +24,11 @@ export class Cache {
     );
   }
 
-  read(question: string): Observable<CacheData | undefined> {
+  read(question: string): Observable<CacheData> {
     return this.initialize$.pipe(
       concatMapTo(from(chrome.storage.local.get(this.key))),
-      map((results) => (results[this.key] ?? {}) as CacheData | undefined),
-      map((data) => (data?.question == question ? data : undefined)),
+      map((results) => (results[this.key] as CacheData) ?? undefined),
+      map((data) => (data?.question == question ? data : { question })),
     );
   }
 
@@ -41,6 +41,6 @@ export class Cache {
 
 interface CacheData {
   question: string;
-  answer: string;
-  archives: WeegyArchiveDialog[];
+  answer?: string;
+  archives?: WeegyArchiveDialog[];
 }

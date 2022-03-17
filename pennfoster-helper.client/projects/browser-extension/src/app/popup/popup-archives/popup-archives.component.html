@@ -1,16 +1,20 @@
-<mtx-loader [loading]="loading">
-  <div class="container" *ngIf="!loading">
+<mtx-loader
+  *ngIf="archives$ | withLoading | async as archives"
+  [loading]="archives.loading"
+>
+  <div class="container">
     <div class="content">
       <section class="mat-h2">
-        {{ archiveCurrent?.question }}
+        {{ archives.value?.[page - 1]?.question }}
       </section>
       <section class="mat-h3">
-        {{ archiveCurrent?.answer }}
+        {{ archives.value?.[page - 1]?.answer }}
       </section>
     </div>
     <div class="actions">
       <app-paginator
-        [pageMax]="archives.length"
+        *ngIf="archives.value"
+        [pageMax]="archives.value.length"
         [(pageCurrent)]="page"
       ></app-paginator>
     </div>

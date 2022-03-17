@@ -1,10 +1,16 @@
-<mtx-loader [loading]="loading">
+<mtx-loader
+  *ngIf="{
+    question: question$ | withLoading | async,
+    answer: answer$ | withLoading | async
+  } as data"
+  [loading]="data.question?.loading || data.answer?.loading"
+>
   <div class="container">
     <section class="mat-h2">
-      {{ question }}
+      {{ data.question?.value }}
     </section>
     <section class="mat-h3">
-      {{ answer }}
+      {{ data.answer?.value }}
     </section>
   </div>
 </mtx-loader>

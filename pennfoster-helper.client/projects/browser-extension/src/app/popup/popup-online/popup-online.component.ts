@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { concatMap, of, tap } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 
 import { Cache } from '../../core/cache.service';
 import { PageContent } from '../../core/page-content.service';
@@ -11,30 +11,34 @@ import { WeegyService } from '../../core/weegy.service';
   styleUrls: ['./popup-online.component.scss'],
 })
 export class PopupOnlineComponent implements OnInit {
-  loading = true;
-  question!: string;
-  answer!: string;
+  question$!: Observable<string>;
+  answer$!: Observable<string>;
 
   constructor(
-    private pageContent: PageContent,
+    private content: PageContent,
     private cache: Cache,
     private weegyService: WeegyService,
   ) {}
 
   ngOnInit(): void {
-    // TODO: handle errors
-    // TODO: write cache
-    this.pageContent.question$
-      .pipe(
-        tap((question) => (this.question = question)),
-        concatMap(() => this.cache.read(this.question)),
-        concatMap((cache) =>
-          cache?.answer
-            ? of(cache.answer)
-            : this.weegyService.ask(this.question),
-        ),
-        tap((answer) => (this.answer = answer)),
-      )
-      .subscribe(() => (this.loading = false));
+    this.question$ = this.content.question$;
+    // TODO: flatten the mess
+    this.answer$ = this.question$.pipe(
+      switchMap((question) =>
+        this.cache
+          .read(question)
+          .pipe(
+            switchMap((data) =>
+              data.answer
+                ? of(data.answer)
+                : this.weegyService
+                    .ask(question)
+                    .pipe(
+                      tap((answer) => this.cache.write({ ...data, answer })),
+                    ),
+            ),
+          ),
+      ),
+    );
   }
 }
