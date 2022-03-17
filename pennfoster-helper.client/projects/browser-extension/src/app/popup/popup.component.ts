@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PopupComponent implements OnInit {
   tabs: TabInfo[] = [
-    { name: 'Archives', commands: ['archives'] },
-    { name: 'Online', commands: ['online'] },
+    { name: 'Archives', icon: 'article', commands: ['archives'] },
+    { name: 'Online', icon: 'question_answer', commands: ['online'] },
   ];
   tabActive = this.tabs[0];
 
@@ -19,5 +19,6 @@ export class PopupComponent implements OnInit {
 
 interface TabInfo {
   name: string;
+  icon: string;
   commands: unknown[];
 }

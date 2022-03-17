@@ -16,7 +16,8 @@
           [active]="tabActive == tab"
           (click)="tabActive = tab"
         >
-          {{ tab.name }}
+          <mat-icon>{{ tab.icon }}</mat-icon>
+          <span>{{ tab.name }}</span>
         </a>
       </nav>
       <mat-tab-nav-panel>
