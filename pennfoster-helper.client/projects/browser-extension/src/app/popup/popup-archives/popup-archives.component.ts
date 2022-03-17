@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of, switchMap, tap } from 'rxjs';
 
 import { Cache } from '../../core/cache.service';
-import { PageContent } from '../../core/page-content.service';
+import { PageData } from '../../core/page-data.service';
 import {
   WeegyArchiveDialog,
   WeegyArchiveService,
@@ -18,7 +18,7 @@ export class PopupArchivesComponent implements OnInit {
   page = 1;
 
   constructor(
-    private content: PageContent,
+    private content: PageData,
     private cache: Cache,
     private weegyArchiveService: WeegyArchiveService,
   ) {}

@@ -6,7 +6,7 @@ import { Bridge } from './bridge.service';
 @Injectable({
   providedIn: 'root',
 })
-export class PageContent {
+export class PageData {
   question$: Observable<string>;
 
   constructor(private bridge: Bridge) {

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PageContent } from './page-content.service';
+import { PageData } from './page-data.service';
 
-describe('PageContent', () => {
-  let service: PageContent;
+describe('PageData', () => {
+  let service: PageData;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PageContent);
+    service = TestBed.inject(PageData);
   });
 
   it('should be created', () => {
