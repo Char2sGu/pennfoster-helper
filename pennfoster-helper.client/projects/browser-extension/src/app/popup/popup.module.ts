@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { PaginatorModule } from '../components/paginator/paginator.module';
 import { PopupComponent } from './popup.component';
 import { PopupRoutingModule } from './popup-routing.module';
 
@@ -23,6 +24,7 @@ import { PopupRoutingModule } from './popup-routing.module';
     MatProgressSpinnerModule,
     OverlayModule,
     PortalModule,
+    PaginatorModule,
   ],
 })
 export class PopupModule {}

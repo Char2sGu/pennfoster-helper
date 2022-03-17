@@ -13,23 +13,11 @@
         <section class="mat-h3">{{ dialogCurrent.answer }}</section>
       </div>
       <div class="actions">
-        <div>
-          <button
-            mat-icon-button
-            [disabled]="dialogCurrentIndex == 0"
-            (click)="dialogCurrentIndex = dialogCurrentIndex - 1"
-          >
-            <mat-icon>navigate_before</mat-icon>
-          </button>
-          <span>{{ dialogCurrentIndex + 1 }} / {{ dialogs.length }}</span>
-          <button
-            mat-icon-button
-            [disabled]="dialogCurrentIndex == dialogs.length - 1"
-            (click)="dialogCurrentIndex = dialogCurrentIndex + 1"
-          >
-            <mat-icon>navigate_next</mat-icon>
-          </button>
-        </div>
+        <app-paginator
+          [pageMax]="dialogs.length"
+          [pageCurrent]="dialogCurrentIndex + 1"
+          (pageCurrentChange)="dialogCurrentIndex = $event - 1"
+        ></app-paginator>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
