@@ -56,6 +56,6 @@ export class WeegyOnlineService {
     const $ = load(raw);
     const $returns = $('string'); // the response contains multiple return values
     const $result = $($($returns[5]).text()); // the 5th return value is a piece of HTML containing Weegy's answer
-    return $($result[0]).text(); // the HTML's first node as a text node is Weegy's answer
+    return $.text($result);
   }
 }
