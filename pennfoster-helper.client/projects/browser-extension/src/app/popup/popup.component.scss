@@ -19,19 +19,19 @@ mat-sidenav {
   width: 280px;
 }
 
-mat-sidenav-content {
+mat-sidenav-content main {
   display: flex;
   flex-direction: column;
   height: calc(100% - 16px * 2);
   padding: 16px;
-  > .content {
+  .content {
     flex-grow: 1;
     height: 0;
     overflow-wrap: break-word;
     white-space: pre-wrap;
     overflow: auto;
   }
-  > .actions {
+  .actions {
     display: flex;
     justify-content: flex-end;
     align-items: center;

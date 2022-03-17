@@ -1,12 +1,10 @@
-import { OverlayModule } from '@angular/cdk/overlay';
-import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MtxLoaderModule } from '@ng-matero/extensions/loader';
 
 import { PaginatorModule } from '../components/paginator/paginator.module';
 import { PopupComponent } from './popup.component';
@@ -21,9 +19,7 @@ import { PopupRoutingModule } from './popup-routing.module';
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatProgressSpinnerModule,
-    OverlayModule,
-    PortalModule,
+    MtxLoaderModule,
     PaginatorModule,
   ],
 })
