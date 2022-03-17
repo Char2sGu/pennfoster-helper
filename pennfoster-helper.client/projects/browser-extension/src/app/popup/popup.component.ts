@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { concatMap, of } from 'rxjs';
+import { concatMap, forkJoin, of } from 'rxjs';
 
 import { Bridge } from '../core/bridge.service';
 import { Cache } from '../core/cache.service';
+import { Weegy } from '../core/weegy.service';
 import {
   WeegyArchive,
   WeegyArchiveDialog,
@@ -14,17 +15,19 @@ import {
   styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
-  selectedIndex = 0;
-  dialogs: WeegyArchiveDialog[] = [];
-  dialogCurrentIndex = 0;
+  question!: string;
+  onlineAnswer!: string;
+  archiveDialogs: WeegyArchiveDialog[] = [];
+  archiveDialogCurrentIndex = 0;
   loading = true;
 
-  get dialogCurrent(): WeegyArchiveDialog {
-    return this.dialogs[this.dialogCurrentIndex];
+  get archiveDialogCurrent(): WeegyArchiveDialog {
+    return this.archiveDialogs[this.archiveDialogCurrentIndex];
   }
 
   constructor(
     private bridge: Bridge,
+    private weegy: Weegy,
     private weegyArchive: WeegyArchive,
     private cache: Cache,
   ) {}
@@ -38,16 +41,20 @@ export class PopupComponent implements OnInit {
     );
     question$.subscribe((question) => {
       if (!question) return; // TODO
-      const $dialogs = this.cache
-        .read(question)
-        .pipe(
-          concatMap((results) =>
-            results.length ? of(results) : this.weegyArchive.search(question),
+      this.question = question;
+      forkJoin([
+        this.weegy.ask(question),
+        this.cache
+          .read(question)
+          .pipe(
+            concatMap((results) =>
+              results.length ? of(results) : this.weegyArchive.search(question),
+            ),
           ),
-        );
-      $dialogs.subscribe((dialogs) => {
-        this.cache.write(question, dialogs).subscribe();
-        this.dialogs = dialogs;
+      ]).subscribe(([onlineAnswer, archiveDialogs]) => {
+        this.onlineAnswer = onlineAnswer;
+        this.cache.write(question, archiveDialogs).subscribe();
+        this.archiveDialogs = archiveDialogs;
         this.loading = false;
       });
     });

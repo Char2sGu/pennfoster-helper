@@ -27,6 +27,13 @@ mat-sidenav-content {
       height: 0;
     }
   }
+  main.online {
+    height: calc(100% - 16px * 2);
+    padding: 16px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    overflow: auto;
+  }
   main.archives {
     display: flex;
     flex-direction: column;

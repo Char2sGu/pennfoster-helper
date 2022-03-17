@@ -10,18 +10,31 @@
     <mat-sidenav-content>
       <mtx-loader [loading]="loading">
         <mat-tab-group>
-          <mat-tab label=""></mat-tab>
+          <mat-tab label="Online">
+            <main class="online">
+              <section class="mat-h2">
+                {{ question }}
+              </section>
+              <section class="mat-h3">
+                {{ onlineAnswer }}
+              </section>
+            </main>
+          </mat-tab>
           <mat-tab label="Archives">
-            <main class="archives" *ngIf="dialogCurrent">
+            <main class="archives" *ngIf="archiveDialogCurrent">
               <div class="content">
-                <section class="mat-h2">{{ dialogCurrent.question }}</section>
-                <section class="mat-h3">{{ dialogCurrent.answer }}</section>
+                <section class="mat-h2">
+                  {{ archiveDialogCurrent.question }}
+                </section>
+                <section class="mat-h3">
+                  {{ archiveDialogCurrent.answer }}
+                </section>
               </div>
               <div class="actions">
                 <app-paginator
-                  [pageMax]="dialogs.length"
-                  [pageCurrent]="dialogCurrentIndex + 1"
-                  (pageCurrentChange)="dialogCurrentIndex = $event - 1"
+                  [pageMax]="archiveDialogs.length"
+                  [pageCurrent]="archiveDialogCurrentIndex + 1"
+                  (pageCurrentChange)="archiveDialogCurrentIndex = $event - 1"
                 ></app-paginator>
               </div>
             </main>

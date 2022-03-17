@@ -9,7 +9,7 @@ import { concat, map, Observable } from 'rxjs';
 export class Weegy {
   constructor(private httpClient: HttpClient) {}
 
-  ask(question: string): Observable<unknown> {
+  ask(question: string): Observable<string> {
     return concat(
       this.httpClient
         .post(
