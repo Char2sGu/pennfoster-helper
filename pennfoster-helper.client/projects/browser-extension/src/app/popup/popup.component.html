@@ -13,6 +13,7 @@
           mat-tab-link
           *ngFor="let tab of tabs"
           [routerLink]="tab.commands"
+          [matTooltip]="tab.description"
           [active]="tabActive == tab"
           (click)="tabActive = tab"
         >

@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MtxLoaderModule } from '@ng-matero/extensions/loader';
 
 import { LoadingModule } from '../widgets/loading/loading.module';
@@ -24,6 +25,7 @@ import { PopupRoutingModule } from './popup-routing.module';
     MatToolbarModule,
     MatSidenavModule,
     MatTabsModule,
+    MatTooltipModule,
     MtxLoaderModule,
     PaginatorModule,
     LoadingModule,
