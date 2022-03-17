@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { concatMap, forkJoin, of } from 'rxjs';
+import { concatMap, filter, forkJoin, of, tap } from 'rxjs';
 
 import { Bridge } from '../core/bridge.service';
 import { Cache } from '../core/cache.service';
@@ -34,29 +34,30 @@ export class PopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    const question$ = this.bridge.execute(
-      () =>
-        document.querySelector<HTMLSpanElement>('span.bordered-content')
-          ?.innerText,
-    );
-    question$.subscribe((question) => {
-      if (!question) return; // TODO
-      this.question = question;
-      forkJoin([
-        this.weegy.ask(question),
-        this.cache
-          .read(question)
-          .pipe(
-            concatMap((results) =>
-              results.length ? of(results) : this.weegyArchive.search(question),
-            ),
-          ),
-      ]).subscribe(([onlineAnswer, archiveDialogs]) => {
-        this.onlineAnswer = onlineAnswer;
-        this.cache.write(question, archiveDialogs).subscribe();
-        this.archiveDialogs = archiveDialogs;
+    this.bridge
+      .execute(
+        () =>
+          document.querySelector<HTMLSpanElement>('span.bordered-content')
+            ?.innerText,
+      )
+      .pipe(
+        filter((question): question is string => !!question),
+        tap((question) => (this.question = question)),
+        concatMap(() => this.cache.read(this.question)),
+        concatMap((cacheData) =>
+          cacheData
+            ? of([cacheData.answer, cacheData.archives] as const)
+            : forkJoin([
+                this.weegy.ask(this.question),
+                this.weegyArchive.search(this.question),
+              ]),
+        ),
+      )
+      .subscribe(([answer, archives]) => {
+        this.cache.write({ question: this.question, answer, archives });
+        this.onlineAnswer = answer;
+        this.archiveDialogs = archives;
         this.loading = false;
       });
-    });
   }
 }
