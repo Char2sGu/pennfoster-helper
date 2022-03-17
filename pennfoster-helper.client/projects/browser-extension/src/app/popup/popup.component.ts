@@ -3,9 +3,9 @@ import { concatMap, filter, forkJoin, of, tap } from 'rxjs';
 
 import { Cache } from '../core/cache.service';
 import { PageContent } from '../core/page-content.service';
-import { Weegy } from '../core/weegy.service';
+import { WeegyService } from '../core/weegy.service';
 import {
-  WeegyArchive,
+  WeegyArchiveService,
   WeegyArchiveDialog,
 } from '../core/weegy-archive.service';
 
@@ -27,8 +27,8 @@ export class PopupComponent implements OnInit {
 
   constructor(
     private content: PageContent,
-    private weegy: Weegy,
-    private weegyArchive: WeegyArchive,
+    private weegy: WeegyService,
+    private weegyArchive: WeegyArchiveService,
     private cache: Cache,
   ) {}
 

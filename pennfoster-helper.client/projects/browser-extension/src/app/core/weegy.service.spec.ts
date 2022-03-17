@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Weegy } from './weegy.service';
+import { WeegyService } from './weegy.service';
 
-describe('Weegy', () => {
-  let service: Weegy;
+describe('WeegyService', () => {
+  let service: WeegyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Weegy);
+    service = TestBed.inject(WeegyService);
   });
 
   it('should be created', () => {
