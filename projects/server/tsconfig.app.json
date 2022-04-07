@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.nest.json",
+  "extends": "../../tsconfig.deepkit.json",
   "compilerOptions": {
     "declaration": false,
     "outDir": "../../dist/server"

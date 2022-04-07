@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
+import { AppModule as DeepkitModule, createModule } from '@deepkit/app';
+import { FrameworkModule } from '@deepkit/framework';
 
-@Module({
-  imports: [],
-})
-export class AppModule {}
+export class AppModule extends createModule({}) {
+  override imports: DeepkitModule<any, any>[] = [new FrameworkModule()];
+}

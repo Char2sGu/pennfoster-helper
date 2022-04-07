@@ -1,7 +1,6 @@
-// Make editors and tools to work properly.
+// config for only editors and tools
 {
   "extends": "./tsconfig.common.json",
-  "ts-node": { "files": true },
   "compilerOptions": {
     "paths": {
       "common": ["projects/common/src"]
@@ -12,5 +11,7 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "ts-node": { "files": true },
+  "reflection": true // @deepkit/type-compiler
 }
