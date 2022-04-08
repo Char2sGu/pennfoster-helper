@@ -3,15 +3,9 @@
   "extends": "./tsconfig.common.json",
   "compilerOptions": {
     "paths": {
+      // better autocompletion
       "common": ["projects/common/src"]
     }
   },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  },
-  "ts-node": { "files": true },
   "reflection": true // @deepkit/type-compiler
 }
