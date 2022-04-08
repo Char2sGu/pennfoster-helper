@@ -38,6 +38,8 @@
     "@deepkit/app": "^1.0.1-alpha.71",
     "@deepkit/framework": "^1.0.1-alpha.71",
     "@deepkit/http": "^1.0.1-alpha.71",
+    "@deepkit/orm": "^1.0.1-alpha.71",
+    "@deepkit/sqlite": "^1.0.1-alpha.71",
     "@deepkit/type": "^1.0.1-alpha.71",
     "@deepkit/type-compiler": "^1.0.1-alpha.71",
     "@ng-matero/extensions": "^13.1.0",
