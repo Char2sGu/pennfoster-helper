@@ -96,6 +96,7 @@
             "inlineStyleLanguage": "less",
             "assets": [
               "projects/client/src/favicon.ico",
+              "projects/client/src/manifest.json",
               "projects/client/src/assets"
             ],
             "styles": ["projects/client/src/styles.less"],

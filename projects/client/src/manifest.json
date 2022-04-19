@@ -1,7 +1,8 @@
 {
+  "manifest_version": 3,
   "name": "PennFoster Helper",
   "version": "0.1.0",
-  "manifest_version": 3,
+  "icons": { "128": "./assets/logo.png" },
   "action": { "default_popup": "index.html#/popup" },
   "permissions": ["scripting", "storage"],
   "host_permissions": [
